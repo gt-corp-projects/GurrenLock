@@ -1,0 +1,200 @@
+[
+  {
+    "source": "Abrams.mp4",
+    "name": "Abrams",
+    "hero": "hero_atlas",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Apollo.mp4",
+    "name": "Apollo",
+    "hero": "hero_fencer",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Baba.mp4",
+    "name": "Baba",
+    "hero": "hero_baba",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Bebop.mp4",
+    "name": "Bebop",
+    "hero": "hero_bebop",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Billy.mp4",
+    "name": "Billy",
+    "hero": "hero_punkgoat",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Calico.mp4",
+    "name": "Calico",
+    "hero": "hero_nano",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Celeste.mp4",
+    "name": "Celeste",
+    "hero": "hero_unicorn",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Danny.mp4",
+    "name": "DeadmanDanny",
+    "hero": "hero_deadpack",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Drifter.mp4",
+    "name": "Drifter",
+    "hero": "hero_drifter",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Durman.mp4",
+    "name": "Doorman",
+    "hero": "hero_doorman",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Dynamo.mp4",
+    "name": "Dynamo",
+    "hero": "hero_dynamo",
+    "frames": 227,
+    "fps": 30,
+    "duration": 7.566666666666666,
+    "partial_source": true
+  },
+  {
+    "source": "Geist.mp4",
+    "name": "LadyGeist",
+    "hero": "hero_ghost",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Graves.mp4",
+    "name": "Graves",
+    "hero": "hero_necro",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Grey Talon.mp4",
+    "name": "GreyTalon",
+    "hero": "hero_orion",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Haze.mp4",
+    "name": "Haze",
+    "hero": "hero_haze",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Holliday.mp4",
+    "name": "Holliday",
+    "hero": "hero_astro",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Infernus.mp4",
+    "name": "Infernus",
+    "hero": "hero_inferno",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Ivy.mp4",
+    "name": "Ivy",
+    "hero": "hero_tengu",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Kelvin.mp4",
+    "name": "Kelvin",
+    "hero": "hero_kelvin",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Lash.mp4",
+    "name": "Lash",
+    "hero": "hero_lash",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Mo and Krill.mp4",
+    "name": "MoAndKrill",
+    "hero": "hero_krill",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  },
+  {
+    "source": "Silver.mp4",
+    "name": "Silver",
+    "hero": "hero_werewolf",
+    "frames": 248,
+    "fps": 30,
+    "duration": 8.266666666666667,
+    "partial_source": false
+  }
+]

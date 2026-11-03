@@ -1,0 +1,13 @@
+<root>
+    <styles>
+        <include src="s2r://panorama/styles/citadel_base_styles.vcss" />
+        <include src="s2r://panorama/styles/gurrenlock.vcss" />
+    </styles>
+    <scripts>
+        <include src="s2r://panorama/scripts/gurrenlock_preview_context.vjs" />
+        <include src="s2r://panorama/scripts/gurrenlock.vjs" />
+    </scripts>
+    <Panel id="GurrenLockPreviewRoot" class="State_HeroReveal HeroLoaded" hittest="false" style="width: 100%; height: 100%;">
+        <Panel id="GurrenLockMovieHost" visible="false" hittest="false" hittestchildren="false" />
+    </Panel>
+</root>
