@@ -8,18 +8,29 @@ Animated, Gurren Lagann-inspired loading screens for Deadlock. The mod plays a h
 - `Preview/` — separate sandbox preview interface for testing videos and final frames; disable the main mod while using it.
 - `Tests/` — playback model tests, hero mapping and final-frame texture generator.
 
-## Media and build
+## Downloads and media
 
-Videos and built VPKs are not included. Obtain the matching media separately and place `Hero.webm` and `Hero-LastFrame.png` in `game/citadel/panorama/videos/GurrenLock/`, using the names in `Tests/Clips.json`. The game needs the videos in that location. The PNGs are inputs for generating the final-frame textures.
+Download the main or preview VPK from [Releases](https://github.com/gt-corp-projects/GurrenLock/releases). These packages contain only files in the repository: **videos and last-frame textures are not included**. Without those separately supplied resources, the release is not a complete working media package.
 
-From the repository root, with Python, Pillow, Node.js and [modlock](https://github.com/paralin/modlock) installed:
+Place matching `Hero.webm` and `Hero-LastFrame.png` files in `game/citadel/panorama/videos/GurrenLock/` using the names in `Tests/Clips.json`. The game needs the videos there. Generate the compiled last-frame textures from the PNGs and include them in the VPK when building locally.
+
+## Local build
+
+With Python, Pillow, Node.js and [modlock](https://github.com/paralin/modlock) installed, from the repository root:
 
 ```sh
 python3 Tests/BuildTextures.py
 node Tests/LoadingScreen.cjs
+node Preview/Tests/Preview.cjs
 modlock panorama compile Source --addon gurrenlock -o GurrenLock_dir.vpk
 ```
 
-Install the resulting VPK through a Deadlock mod manager and place the videos in the game directory above. The preview has its own test: `node Preview/Tests/Preview.cjs`. Its VPK also needs the shared player and generated final textures; the preview source alone is not a complete package.
+Install the resulting VPK through a Deadlock mod manager. The preview has its own source and needs the shared player script, stylesheet and generated textures; do not use it together with the main mod.
+
+## Automated builds and versions
+
+GitHub Actions tests and builds separate main and preview VPKs from tracked source files on pushes, pull requests and manual runs. The results are available as workflow artifacts. The preview build includes the shared player script and stylesheet. It does not download or generate media.
+
+`VERSION` contains the release version in `X.Y` format, starting with `0.1`. After a successful build on `main`, Actions creates a release and tag such as `v0.1` if that release does not already exist. Existing releases are left unchanged; change `VERSION` to `0.2` for the next release. To rebuild an existing version without replacing its release, run the workflow manually and download its artifact.
 
 The tests simulate Panorama behavior; playback and compatibility must be checked in Deadlock. Other mods replacing the same HUD or pregame layout may conflict. Game updates can also require changes to the interface files.

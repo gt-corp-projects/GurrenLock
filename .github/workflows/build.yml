@@ -1,0 +1,69 @@
+name: Build VPK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate version and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(cat VERSION)
+          [[ "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          node Tests/LoadingScreen.cjs
+          node Preview/Tests/Preview.cjs
+      - name: Install modlock
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o modlock https://github.com/paralin/modlock/releases/download/v0.1.73/modlock-linux-amd64
+          echo 'e7c55bdffc9500e15396ada10a6be22e107c5d5ca50fb579b831cfcaf9fba20b  modlock' | sha256sum -c -
+          chmod +x modlock
+      - name: Build and inspect VPKs
+        shell: bash
+        env:
+          MODLOCK_NO_UPDATE_CHECK: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p dist preview-build/panorama/{scripts,styles}
+          cp -R Preview/Source/. preview-build/
+          cp Source/panorama/scripts/gurrenlock.js preview-build/panorama/scripts/
+          cp Source/panorama/styles/gurrenlock.css preview-build/panorama/styles/
+          ./modlock panorama compile Source --addon gurrenlock -o dist/GurrenLock_dir.vpk
+          ./modlock panorama compile preview-build --addon gurrenlock -o dist/GurrenLock-Preview_dir.vpk
+          ./modlock vpk list dist/GurrenLock_dir.vpk
+          ./modlock vpk list dist/GurrenLock-Preview_dir.vpk
+          (cd dist && sha256sum *.vpk > SHA256SUMS.txt)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: GurrenLock-vpk-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+      - name: Publish new version
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(cat VERSION)
+          tag="v$version"
+          releases=$(gh release list --limit 1000 --json tagName --jq '.[].tagName')
+          if printf '%s\n' "$releases" | grep -Fxq "$tag"; then
+            echo "Release $tag already exists; keeping it unchanged."
+            exit 0
+          fi
+          gh release create "$tag" dist/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes "VPKs built from repository files at commit $GITHUB_SHA. Videos and last-frame textures are not included; see the README."
