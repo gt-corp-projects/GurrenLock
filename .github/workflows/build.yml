@@ -74,8 +74,16 @@ jobs:
           [[ "$VERIFIED_HASH" =~ ^[a-f0-9]{64}$ ]] || { echo "Enter the tested VPK SHA-256"; exit 1; }
           echo "$VERIFIED_HASH  dist/GurrenLock_dir.vpk" | sha256sum -c -
           version=$(cat VERSION)
+          notes="release-notes/$version.md"
+          [[ -s "$notes" ]] || { echo "Add release notes at $notes before publishing"; exit 1; }
           mkdir release
           cp dist/GurrenLock_dir.vpk release/
           (cd release && sha256sum GurrenLock_dir.vpk > SHA256SUMS.txt)
-          gh release create "v$version" release/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes "Built from commit $GITHUB_SHA. Install videos and final-frame PNGs separately; see the README."
+          gh release create "v$version" release/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes-file "$notes"
 
+
+      - name: Update initial release notes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.head_commit.message == 'Update initial release notes'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit v0.1 --notes-file release-notes/0.1.md
