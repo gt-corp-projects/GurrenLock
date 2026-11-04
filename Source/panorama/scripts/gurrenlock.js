@@ -140,13 +140,12 @@
         if (!host || !host.IsValid()) return;
         var stem = base + clips[hero].name;
         var token = session;
-        // Preload a native Source 2 texture from the VPK. Loose PNG files
-        // under videos are not a reliable Panorama image resource.
+        // Native Movie can release its video texture at EOF. Keep a separate
+        // copy of the final visible frame, shown only after real playback ends.
         still = $.CreatePanel("Image", host, "GurrenLockStill", {
-            src: "s2r://panorama/images/gurrenlock/" + clips[hero].name.toLowerCase() + "_last.vtex", scaling: "stretch", hittest: "false"
+            src: stem + "-LastFrame.png", scaling: "stretch", hittest: "false"
         });
-        still.style.width = "100%"; still.style.height = "100%";
-        still.visible = true; still.style.opacity = "0";
+        still.style.width = "100%"; still.style.height = "100%"; still.visible = false;
         movie = $.CreatePanel("Movie", host, "GurrenLockMovie", {
             src: stem + ".webm", autoplay: "onload", repeat: "false",
             scaling: "stretch", disableaudio: "false", muted: "false",
@@ -170,7 +169,6 @@
             if (!still || !still.IsValid()) return;
             finished = true;
             still.visible = true;
-            still.style.opacity = "1";
             // Release the decoder instead of leaving its cleared EOF texture
             // in front of the final image. Keep activeHero to prevent replay.
             if (observed && observed.IsValid()) {
@@ -178,7 +176,7 @@
                 observed.DeleteAsync(0);
             }
             movie = null;
-            $.Msg("[GurrenLock 1.1.2] Holding final frame: " + hero);
+            $.Msg("[GurrenLock] Holding final frame: " + hero);
         }
         function scheduleFinish(delay) {
             var generation = ++timerGeneration;
@@ -202,20 +200,11 @@
             if (typeof $.RegisterEventHandler !== "function") return;
             try { $.RegisterEventHandler(name, panel, fn); } catch (_) {}
         }
-        hook(still, "ImageLoaded", function () {
-            if (token === session) $.Msg("[GurrenLock 1.1.2] Final texture loaded: " + hero);
-        });
-        hook(still, "ImageFailedLoad", function () {
-            if (token !== session) return;
-            $.Msg("[GurrenLock 1.1.2] Final texture failed; restoring vanilla: " + hero);
-            failedHero = hero;
-            removeMovie();
-        });
         hook(movie, "MoviePlayerPlaybackStart", started);
         hook(movie, "MoviePlayerPlaybackEnded", ended);
         hook(movie, "VideoPlayerEnded", ended);
         hook(movie, "MoviePlayerAudioStart", function () {
-            if (token === session) $.Msg("[GurrenLock 1.1.2] Audio started: " + hero);
+            if (token === session) $.Msg("[GurrenLock] Audio started: " + hero);
         });
         $.Schedule(0.1, function () {
             if (token !== session || !observed.IsValid()) return;
@@ -228,7 +217,7 @@
         // Fallback for clients that never emit playback/end events.
         scheduleFinish(duration);
         host.visible = true;
-        $.Msg("[GurrenLock 1.1.2] Playing " + hero + ": " + stem + ".webm");
+        $.Msg("[GurrenLock] Playing " + hero + ": " + stem + ".webm");
     }
 
     function tick() {
@@ -245,10 +234,10 @@
             if (activeHero) age += 0.1;
         } catch (error) {
             removeMovie(); failedHero = hero;
-            $.Msg("[GurrenLock 1.1.2] Fallback to vanilla: " + error);
+            $.Msg("[GurrenLock] Fallback to vanilla: " + error);
         }
         $.Schedule(0.1, tick);
     }
-    $.Msg("[GurrenLock 1.1.2] Hero-specific loading initialized (22 heroes)");
+    $.Msg("[GurrenLock] Hero-specific loading initialized (22 heroes)");
     $.Schedule(0.0, tick);
 })();

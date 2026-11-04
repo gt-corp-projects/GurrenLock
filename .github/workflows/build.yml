@@ -66,4 +66,4 @@ jobs:
             echo "Release $tag already exists; keeping it unchanged."
             exit 0
           fi
-          gh release create "$tag" dist/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes "VPKs built from repository files at commit $GITHUB_SHA. Videos and last-frame textures are not included; see the README."
+          gh release create "$tag" dist/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes "VPKs built from repository files at commit $GITHUB_SHA. Videos and last-frame PNGs are loaded separately from the game folder; see the README."
