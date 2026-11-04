@@ -74,23 +74,8 @@ jobs:
           [[ "$VERIFIED_HASH" =~ ^[a-f0-9]{64}$ ]] || { echo "Enter the tested VPK SHA-256"; exit 1; }
           echo "$VERIFIED_HASH  dist/GurrenLock_dir.vpk" | sha256sum -c -
           version=$(cat VERSION)
-          gh release create "v$version" dist/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes "Built from commit $GITHUB_SHA. Install videos and final-frame PNGs separately; see the README."
+          mkdir release
+          cp dist/GurrenLock_dir.vpk release/
+          (cd release && sha256sum GurrenLock_dir.vpk > SHA256SUMS.txt)
+          gh release create "v$version" release/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes "Built from commit $GITHUB_SHA. Install videos and final-frame PNGs separately; see the README."
 
-      - name: Replace v0.1 with the tested v0.2 files
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.head_commit.message == 'Repair v0.1 release and remove v0.2'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p tested verification
-          gh release download v0.2 --dir tested
-          echo '7daaf7d7c1b3acffee3a1a787bfaf1b6bb7db8df05f845f6c4e62292c3461f76  tested/GurrenLock_dir.vpk' | sha256sum -c -
-          (cd tested && sha256sum -c SHA256SUMS.txt)
-          gh release upload v0.1 tested/* --clobber
-          gh release download v0.1 --dir verification
-          (cd verification && sha256sum -c SHA256SUMS.txt)
-          echo '7daaf7d7c1b3acffee3a1a787bfaf1b6bb7db8df05f845f6c4e62292c3461f76  verification/GurrenLock_dir.vpk' | sha256sum -c -
-          gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/v0.1" -f sha="$GITHUB_SHA" -F force=true
-          gh release edit v0.1 --title 'GurrenLock 0.1' --notes 'The main VPK is the game-tested build previously published as 0.2. Videos and final-frame PNGs are installed separately; see the README.'
-          gh release delete v0.2 --yes --cleanup-tag
