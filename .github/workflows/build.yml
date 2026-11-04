@@ -82,8 +82,3 @@ jobs:
           gh release create "v$version" release/* --target "$GITHUB_SHA" --title "GurrenLock $version" --notes-file "$notes"
 
 
-      - name: Update initial release notes
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.head_commit.message == 'Update initial release notes'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release edit v0.1 --notes-file release-notes/0.1.md
